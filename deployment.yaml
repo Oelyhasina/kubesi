@@ -18,7 +18,7 @@ spec:
         app: strapi
     spec:
       containers:
-      - image: oelyhasina/images:serversi-1  # Remplacez par votre image Strapi
+      - image: oelyhasina/images:serversi-3
         name: strapi
         env:
          - name: HOST
