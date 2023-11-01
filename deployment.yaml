@@ -34,7 +34,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: strapi-secret
-              key: app-token-salt
+              key: api-token-salt
         - name: ADMIN_JWT_SECRET
           valueFrom:
             secretKeyRef:
