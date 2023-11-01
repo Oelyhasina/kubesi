@@ -21,28 +21,65 @@ spec:
       - image: oelyhasina/images:serversi-1  # Remplacez par votre image Strapi
         name: strapi
         env:
+         - name: HOST
+          value: "0.0.0.0"
+        - name: PORT
+          value: "1337"
+        - name: APP_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: app-keys
+        - name: API_TOKEN_SALT
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: app-token-salt
+        - name: ADMIN_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: admin-jwt-secret
+        - name: TRANSFER_TOKEN_SALT
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: transfert-token-salt
+        # Database
         - name: DATABASE_CLIENT
           value: "postgres"
         - name: DATABASE_HOST
-          value: "serveridea-ha"  # Remplacez par le nom de votre service PostgreSQL
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: database-host
         - name: DATABASE_PORT
-          value: "5432"  # Remplacez par le port de votre service PostgreSQL
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: database-port
         - name: DATABASE_NAME
-          value: "dbsi"  # Remplacez par le nom de votre base de données
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: database-name
         - name: DATABASE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: my-db-credentials  # Remplacez par le nom de votre secret
-              key: username  # Remplacez par la clé dans votre secret
+              name: strapi-secret
+              key: database-username
         - name: DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: my-db-credentials  # Remplacez par le nom de votre secret
-              key: password  # Remplacez par la clé dans votre secret
+              name: strapi-secret
+              key: database-password
         - name: DATABASE_SSL
           value: "false"  # ou "true" si SSL est utilisé
         - name: JWT_SECRET
-          value: "myjwtsecret"  # Remplacez par votre secret JWT
+          valueFrom:
+            secretKeyRef:
+              name: strapi-secret
+              key: jwt-secret
         resources: {}
         ports:
         - containerPort: 1337
