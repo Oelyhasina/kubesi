@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: strapi
+  name: strapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: strapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: strapi
+    spec:
+      containers:
+      - image: oelyhasina/images:serversi-1  # Remplacez par votre image Strapi
+        name: strapi
+        env:
+        - name: DATABASE_CLIENT
+          value: "postgres"
+        - name: DATABASE_HOST
+          value: "serveridea-ha"  # Remplacez par le nom de votre service PostgreSQL
+        - name: DATABASE_PORT
+          value: "5432"  # Remplacez par le port de votre service PostgreSQL
+        - name: DATABASE_NAME
+          value: "dbsi"  # Remplacez par le nom de votre base de données
+        - name: DATABASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-db-credentials  # Remplacez par le nom de votre secret
+              key: username  # Remplacez par la clé dans votre secret
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-db-credentials  # Remplacez par le nom de votre secret
+              key: password  # Remplacez par la clé dans votre secret
+        - name: DATABASE_SSL
+          value: "false"  # ou "true" si SSL est utilisé
+        - name: JWT_SECRET
+          value: "myjwtsecret"  # Remplacez par votre secret JWT
+        resources: {}
+        ports:
+        - containerPort: 1337
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: strapi-service
+  labels:
+    app: strapi-service
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30001  # Vous pouvez changer le nodePort si nécessaire
+    port: 80
+    targetPort: 1337  # Port sur lequel Strapi est exposé
+  selector:
+    app: strapi
