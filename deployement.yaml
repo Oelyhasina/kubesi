@@ -95,7 +95,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - nodePort: 30001  # Vous pouvez changer le nodePort si nécessaire
+  - nodePort: 30002  # Vous pouvez changer le nodePort si nécessaire
     port: 80
     targetPort: 1337  # Port sur lequel Strapi est exposé
   selector:
