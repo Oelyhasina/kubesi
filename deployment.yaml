@@ -21,7 +21,7 @@ spec:
       - image: oelyhasina/images:serversi-3
         name: strapi
         env:
-         - name: HOST
+        - name: HOST
           value: "0.0.0.0"
         - name: PORT
           value: "1337"
